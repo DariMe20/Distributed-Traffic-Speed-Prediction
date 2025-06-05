@@ -4,72 +4,71 @@
 from globus_compute_sdk import Client, Executor
 from globus_compute_sdk.serialize import ComputeSerializer, CombinedCode
 import time
-import numpy as np
-import pandas as pd
 import pickle
-import h5py
-import networkx as nx
 
 
 # ----------------------------------------------------
-# Main function to analyze traffic
+# Main function to analyze traffic and predict speed
 # ----------------------------------------------------
-def traffic_analysis(params):
-    logs = []
-
+def traffic_prediction(params):
     import numpy as np
     import pandas as pd
     import pickle
-    import h5py
-    import networkx as nx
+    import tensorflow as tf
+
+    logs = []
 
     try:
-        sensor_id = params['sensor_id']
         adj_pickle_path = params['adj_pickle_path']
         h5_path = params['h5_path']
+        model_path = params['model_path']
+        scaler_path = params['scaler_path']
+        output_path = params['output_path']
 
-        logs.append(f"[DEBUG] Loading adj pickle file: {adj_pickle_path}")
-        with open(adj_pickle_path, 'rb') as f:
-            adj_data = pickle.load(f, encoding='latin1')
+        lookback = 5
 
-        if isinstance(adj_data, list) and len(adj_data) >= 3:
-            adj_matrix = adj_data[2]
-            logs.append(f"[DEBUG] Adjacency matrix shape: {np.shape(adj_matrix)}")
-        else:
-            logs.append("[ERROR] Unexpected structure in the pickle file.")
+        # Load data
+        logs.append(f"[INFO] Loading traffic data from: {h5_path}")
+        df = pd.read_hdf(h5_path, key='df')
+        data = df.values  # shape: (num_timesteps, num_sensors)
+
+        # Load scaler
+        logs.append(f"[INFO] Loading scaler from: {scaler_path}")
+        with open(scaler_path, 'rb') as f:
+            scaler = pickle.load(f)
+        data_scaled = scaler.transform(data)
+
+        if data_scaled.shape[0] < lookback:
+            logs.append("[ERROR] Not enough data for lookback.")
             return logs
 
-        if isinstance(adj_matrix, list):
-            adj_matrix = np.array(adj_matrix)
-            logs.append(f"[DEBUG] Converted adjacency_matrix to numpy array: {adj_matrix.shape}")
+        # Prepare input sequence
+        X_pred = np.expand_dims(data_scaled[-lookback:, :], axis=0)
 
-        if adj_matrix.ndim != 2:
-            logs.append("[ERROR] adjacency_matrix is not 2D!")
-            return logs
+        # Load model
+        logs.append(f"[INFO] Loading model from: {model_path}")
+        model = tf.keras.models.load_model(model_path, compile=False)
+        logs.append("[INFO] Model loaded successfully.")
 
-        logs.append(f"[DEBUG] Loading HDF5 file: {h5_path}")
-        try:
-            df = pd.read_hdf(h5_path, key='df')
-            data = df.values
-            logs.append(f"[DEBUG] Traffic data shape: {data.shape}")
-        except Exception as e:
-            logs.append(f"[ERROR] Could not load HDF5 data using pandas: {e}")
-            return logs
+        # Predict traffic speed based on input sequence
+        y_pred_scaled = model.predict(X_pred)[0]
+        y_pred = scaler.inverse_transform(y_pred_scaled.reshape(1, -1))[0]
 
-        if data.ndim != 2:
-            logs.append("[ERROR] Data is not 2D!")
-            return logs
+        logs.append("[INFO] Prediction completed.")
 
-        speed_data = data[:, sensor_id]
-        avg_speed = np.mean(speed_data)
-        logs.append(f"[DEBUG] Average speed for sensor {sensor_id}: {avg_speed:.2f} km/h")
-
-        output_path = '/home/darime/outputs/traffic_analysis.txt'
+        # Write results in txt file
         with open(output_path, 'a') as f:
-            f.write(f"Sensor {sensor_id}: Average speed = {avg_speed:.2f} km/h\n")
-        logs.append(f"[DEBUG] Result written to {output_path}")
+            f.write("===== Traffic Prediction Results =====\n")
+            for idx, speed in enumerate(y_pred):
+                avg_speed = np.mean(data[:, idx])
+                line = (f"🚗 Driving segment from sensor {idx}:\n"
+                        f"   Average speed: {avg_speed:.2f} km/h\n"
+                        f"   Predicted next: {speed:.2f} km/h\n")
+                logs.append(line.strip())
+                f.write(line)
+            f.write("\n")
 
-        logs.append(f"Sensor {sensor_id}: Average speed = {avg_speed:.2f} km/h")
+        logs.append(f"[INFO] Results written to: {output_path}")
         return logs
 
     except Exception as e:
@@ -88,44 +87,51 @@ endpoint_id = 'ac9f12d1-f1f7-44d3-a40f-b0ee9ea6618b'
 
 # Register the function
 func_id = gc.register_function(
-    function=traffic_analysis,
-    description="Calculate average speed for a given sensor ID using METR-LA dataset."
+    function=traffic_prediction,
+    description="Analyze traffic and predict next speed for all sensors using METR-LA dataset."
 )
 print(f"Function registered with ID: {func_id}")
 
 # ----------------------------------------------------
 # Define input parameters
 # ----------------------------------------------------
-sensor_ids = [10, 20, 21, 22, 25, 30]
-for sensor in sensor_ids:
-    params = {
-        'sensor_id': sensor,
-        'adj_pickle_path': '/home/darime/data/adj_METR-LA.pkl',
-        'h5_path': '/home/darime/data/METR-LA.h5'
-    }
+# Load the graph to count sensors
+with open('/home/darime/data/adj_METR-LA.pkl', 'rb') as f:
+    adj_data = pickle.load(f, encoding='latin1')
+if isinstance(adj_data, list) and len(adj_data) >= 3:
+    total_sensors = adj_data[2].shape[0]
+else:
+    total_sensors = 0
 
-    # ----------------------------------------------------
-    # Submit the function for remote execution
-    # ----------------------------------------------------
-    executor = Executor(endpoint_id=endpoint_id)
-    future = executor.submit(traffic_analysis, params)
+print(f"[INFO] Total sensors in the dataset: {total_sensors}")
 
-    start_time = time.time()
-    print("Waiting for task to complete...")
+# Input parameters
+params = {
+    'adj_pickle_path': '/home/darime/data/adj_METR-LA.pkl',
+    'h5_path': '/home/darime/data/METR-LA.h5',
+    'model_path': '/home/darime/models/keras_model_all_sensors.h5',
+    'scaler_path': '/home/darime/models/scaler_all_sensors.pkl',
+    'output_path': '/home/darime/outputs/traffic_analysis_with_nn.txt'
+}
 
-    # ----------------------------------------------------
-    # Poll for task status
-    # ----------------------------------------------------
-    while not future.done():
-        print("Task pending...")
-        time.sleep(1)
+# ----------------------------------------------------
+# Submit the function for remote execution
+# ----------------------------------------------------
+executor = Executor(endpoint_id=endpoint_id)
+future = executor.submit(traffic_prediction, params)
 
-    # ----------------------------------------------------
-    # Retrieve and display results
-    # ----------------------------------------------------
-    result = future.result()
-    print("Task completed!")
-    print(f"Execution time: {time.time() - start_time:.2f} seconds")
-    print("Result:")
-    for line in result:
-        print(line)
+start_time = time.time()
+print("⏳ Waiting for task to complete...")
+
+# Poll for task status
+while not future.done():
+    print("Task pending...")
+    time.sleep(1)
+
+# Retrieve and display results
+result = future.result()
+print("✅ Task completed!")
+print(f"Execution time: {time.time() - start_time:.2f} seconds")
+print("Result:")
+for line in result:
+    print(line)
