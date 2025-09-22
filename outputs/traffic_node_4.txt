@@ -1,0 +1,155 @@
+===== Traffic Prediction Results =====
+🚗 Driving segment from sensor 156:
+   Average speed: 52.31 km/h
+   Predicted next: 54.33 km/h
+🚗 Driving segment from sensor 157:
+   Average speed: 55.77 km/h
+   Predicted next: 62.84 km/h
+🚗 Driving segment from sensor 158:
+   Average speed: 51.13 km/h
+   Predicted next: 58.82 km/h
+🚗 Driving segment from sensor 159:
+   Average speed: 49.24 km/h
+   Predicted next: 61.08 km/h
+🚗 Driving segment from sensor 160:
+   Average speed: 43.11 km/h
+   Predicted next: 57.03 km/h
+🚗 Driving segment from sensor 161:
+   Average speed: 57.62 km/h
+   Predicted next: 65.49 km/h
+🚗 Driving segment from sensor 162:
+   Average speed: 58.81 km/h
+   Predicted next: 66.22 km/h
+🚗 Driving segment from sensor 163:
+   Average speed: 47.58 km/h
+   Predicted next: 61.12 km/h
+🚗 Driving segment from sensor 164:
+   Average speed: 51.94 km/h
+   Predicted next: 59.65 km/h
+🚗 Driving segment from sensor 165:
+   Average speed: 47.48 km/h
+   Predicted next: 53.89 km/h
+🚗 Driving segment from sensor 166:
+   Average speed: 56.94 km/h
+   Predicted next: 49.73 km/h
+🚗 Driving segment from sensor 167:
+   Average speed: 61.93 km/h
+   Predicted next: 65.78 km/h
+🚗 Driving segment from sensor 168:
+   Average speed: 58.53 km/h
+   Predicted next: 64.55 km/h
+🚗 Driving segment from sensor 169:
+   Average speed: 59.11 km/h
+   Predicted next: 64.64 km/h
+🚗 Driving segment from sensor 170:
+   Average speed: 51.36 km/h
+   Predicted next: 56.55 km/h
+🚗 Driving segment from sensor 171:
+   Average speed: 59.74 km/h
+   Predicted next: 64.20 km/h
+🚗 Driving segment from sensor 172:
+   Average speed: 51.32 km/h
+   Predicted next: 58.77 km/h
+🚗 Driving segment from sensor 173:
+   Average speed: 58.92 km/h
+   Predicted next: 63.08 km/h
+🚗 Driving segment from sensor 174:
+   Average speed: 42.71 km/h
+   Predicted next: 53.80 km/h
+🚗 Driving segment from sensor 175:
+   Average speed: 56.83 km/h
+   Predicted next: 61.22 km/h
+🚗 Driving segment from sensor 176:
+   Average speed: 58.48 km/h
+   Predicted next: 65.78 km/h
+🚗 Driving segment from sensor 177:
+   Average speed: 57.91 km/h
+   Predicted next: 60.82 km/h
+🚗 Driving segment from sensor 178:
+   Average speed: 60.03 km/h
+   Predicted next: 63.12 km/h
+🚗 Driving segment from sensor 179:
+   Average speed: 52.59 km/h
+   Predicted next: 54.98 km/h
+🚗 Driving segment from sensor 180:
+   Average speed: 49.30 km/h
+   Predicted next: 57.43 km/h
+🚗 Driving segment from sensor 181:
+   Average speed: 51.51 km/h
+   Predicted next: 60.63 km/h
+🚗 Driving segment from sensor 182:
+   Average speed: 59.73 km/h
+   Predicted next: 63.75 km/h
+🚗 Driving segment from sensor 183:
+   Average speed: 61.16 km/h
+   Predicted next: 66.00 km/h
+🚗 Driving segment from sensor 184:
+   Average speed: 59.81 km/h
+   Predicted next: 62.84 km/h
+🚗 Driving segment from sensor 185:
+   Average speed: 58.08 km/h
+   Predicted next: 62.83 km/h
+🚗 Driving segment from sensor 186:
+   Average speed: 57.18 km/h
+   Predicted next: 61.69 km/h
+🚗 Driving segment from sensor 187:
+   Average speed: 40.86 km/h
+   Predicted next: 53.36 km/h
+🚗 Driving segment from sensor 188:
+   Average speed: 57.61 km/h
+   Predicted next: 64.18 km/h
+🚗 Driving segment from sensor 189:
+   Average speed: 57.12 km/h
+   Predicted next: 60.43 km/h
+🚗 Driving segment from sensor 190:
+   Average speed: 56.20 km/h
+   Predicted next: 62.34 km/h
+🚗 Driving segment from sensor 191:
+   Average speed: 45.40 km/h
+   Predicted next: 55.50 km/h
+🚗 Driving segment from sensor 192:
+   Average speed: 54.66 km/h
+   Predicted next: 61.34 km/h
+🚗 Driving segment from sensor 193:
+   Average speed: 42.36 km/h
+   Predicted next: 52.39 km/h
+🚗 Driving segment from sensor 194:
+   Average speed: 49.85 km/h
+   Predicted next: 55.38 km/h
+🚗 Driving segment from sensor 195:
+   Average speed: 58.40 km/h
+   Predicted next: 64.98 km/h
+🚗 Driving segment from sensor 196:
+   Average speed: 30.01 km/h
+   Predicted next: 30.61 km/h
+🚗 Driving segment from sensor 197:
+   Average speed: 37.80 km/h
+   Predicted next: 43.58 km/h
+🚗 Driving segment from sensor 198:
+   Average speed: 58.16 km/h
+   Predicted next: 65.52 km/h
+🚗 Driving segment from sensor 199:
+   Average speed: 51.22 km/h
+   Predicted next: 61.40 km/h
+🚗 Driving segment from sensor 200:
+   Average speed: 59.80 km/h
+   Predicted next: 61.40 km/h
+🚗 Driving segment from sensor 201:
+   Average speed: 59.33 km/h
+   Predicted next: 64.49 km/h
+🚗 Driving segment from sensor 202:
+   Average speed: 56.92 km/h
+   Predicted next: 61.01 km/h
+🚗 Driving segment from sensor 203:
+   Average speed: 62.48 km/h
+   Predicted next: 65.57 km/h
+🚗 Driving segment from sensor 204:
+   Average speed: 54.70 km/h
+   Predicted next: 60.58 km/h
+🚗 Driving segment from sensor 205:
+   Average speed: 58.92 km/h
+   Predicted next: 64.63 km/h
+🚗 Driving segment from sensor 206:
+   Average speed: 51.20 km/h
+   Predicted next: 60.41 km/h
+
